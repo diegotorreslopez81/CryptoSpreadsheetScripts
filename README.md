@@ -3,7 +3,7 @@
 This repo is built to create a collection of Google Apps Scripts using Spreadsheet that help you with Cryptocurrencies.
 
 
-## Script: Crypto Price
+## Script: UpdateCryptoPrice
 
 How to use it?
 
