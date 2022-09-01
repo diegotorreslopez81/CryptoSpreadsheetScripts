@@ -1,0 +1,51 @@
+ // API KEY -  Coinmarketcap
+ var apiKey = _set_your_key_
+
+function onOpen() { 
+    SpreadsheetApp.getUi() // Or DocumentApp or FormApp.
+      .createMenu('My Tools')
+      .addItem('Update Price', 'updatePrice') 
+      .addToUi(); 
+}
+
+
+function updatePrice(){
+  var sheet = SpreadsheetApp.getActiveSpreadsheet();
+  var range = sheet.getRange("A2:B"+sheet.getLastRow());
+  
+  var values = range.getValues();
+  for (var i = 0; i < values.length; i++) {
+    if (values[i][1].toString().replace(/ /g,'') != "") {
+      values[i][1] = getCryptoPrice(values[i][0]);
+      Logger.log(values[i][1]);
+      Utilities.sleep(500);
+    }
+  }
+  range.setValues(values)
+  sheet.getRange("D1").setValue(Utilities.formatDate(new Date(), "GMT+2", "dd/MM/yyyy"))
+}
+
+function getCryptoPrice(coin) {
+  var url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol="+coin
+  var requestOptions = {
+    method: 'GET',
+    uri: 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest',
+    qs: {
+      start: 1,
+      limit: 5000,
+      convert: 'USD'
+    },
+    headers: {
+      'X-CMC_PRO_API_KEY': apiKey
+    },
+    json: true,
+    gzip: true
+  };
+
+  var httpRequest = UrlFetchApp.fetch(url, requestOptions);
+  var getContext = httpRequest.getContentText();
+  var parseData = JSON.parse(getContext);
+  
+  return(parseData.data[coin].quote.USD.price)
+
+}
