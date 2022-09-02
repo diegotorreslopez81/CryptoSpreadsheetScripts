@@ -5,6 +5,8 @@ This repo is built to create a collection of Google Apps Scripts using Spreadshe
 
 ## Script: UpdateCryptoPrice
 
+This is script let you update the current price column of your sheet.
+
 How to use it?
 
 1. You need a API key to get coinmarketcap data, get it here: https://coinmarketcap.com/api/
